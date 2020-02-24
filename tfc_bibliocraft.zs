@@ -7,7 +7,11 @@ import mods.terrafirmacraft.Anvil;
 import mods.terrafirmacraft.ClayKnapping;
 import mods.terrafirmacraft.Heating;
 
-// Config Options:
+// ----- Config ------:
+// These chests act like vanilla chests
+val disable_bibliocraft_chests = true;
+// Remove Power Drill
+val disable_powerdrill = true;
 
 var bibliocraft_remove_recipes = [
     <bibliocraft:seatback4:6>,
@@ -436,34 +440,35 @@ for wood_type, wood in tfc_woods {
     JEI.addItem(fancyworkbench);
 
     // framedchest
-    var framedchest = <bibliocraft:framedchest:6>.withTag(
-        {
-            renderTexture: tag_text,
-            display: {Name: wood_display_name + " Framed Chest"}
+    if (!disable_bibliocraft_chests) {
+        var framedchest = <bibliocraft:framedchest:6>.withTag(
+            {
+                renderTexture: tag_text,
+                display: {Name: wood_display_name + " Framed Chest"}
 
-        }
-    );
-    recipes.addShaped(
-        'tfc_framedchest_0_' + wood_type,
-        framedchest,
-        [
-            [wood['lumber'], wood['lumber'], wood['lumber']],
-            [wood['lumber'], <bibliocraft:label:6>.withTag({renderTexture: tag_text}), wood['lumber']],
-            [wood['lumber'], wood['lumber'], wood['lumber']],
-        ]
-    );
+            }
+        );
+        recipes.addShaped(
+            'tfc_framedchest_0_' + wood_type,
+            framedchest,
+            [
+                [wood['lumber'], wood['lumber'], wood['lumber']],
+                [wood['lumber'], <bibliocraft:label:6>.withTag({renderTexture: tag_text}), wood['lumber']],
+                [wood['lumber'], wood['lumber'], wood['lumber']],
+            ]
+        );
 
-    recipes.addShaped(
-        'tfc_framedchest_1_' + wood_type,
-        framedchest,
-        [
-            [wood['plank'], wood['plank'], wood['plank']],
-            [wood['plank'], <bibliocraft:label:6>.withTag({renderTexture: tag_text}), wood['plank']],
-            [wood['plank'], wood['plank'], wood['plank']],
-        ]
-    );
-    JEI.addItem(framedchest);
-
+        recipes.addShaped(
+            'tfc_framedchest_1_' + wood_type,
+            framedchest,
+            [
+                [wood['plank'], wood['plank'], wood['plank']],
+                [wood['plank'], <bibliocraft:label:6>.withTag({renderTexture: tag_text}), wood['plank']],
+                [wood['plank'], wood['plank'], wood['plank']],
+            ]
+        );
+        JEI.addItem(framedchest);
+    }
     // furniturepaneler
     var furniturepaneler = <bibliocraft:furniturepaneler:6>.withTag(
         {
@@ -819,7 +824,12 @@ for wood_type, wood in tfc_woods {
 
 // None wood variant tfc recipe changes
 // Remove orignal recipes
-JEI.removeAndHide(<bibliocraft:bibliodrill>);
+if (disable_powerdrill) {
+    JEI.removeAndHide(<bibliocraft:bibliodrill>);
+}
+if (disable_bibliocraft_chests) {
+    JEI.removeAndHide(<bibliocraft:framedchest:*>;
+}
 JEI.removeAndHide(<bibliocraft:framingsaw>);
 
 
